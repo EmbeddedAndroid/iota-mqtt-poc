@@ -128,7 +128,7 @@ var txQueue = async.queue(function(task, done) {
     }];
     var seed = IOTA_SEED;
     var depth = 9;
-    var minWeightMagnitude = 18;
+    var minWeightMagnitude = 14;
 
     iotajs.api.sendTransfer(seed, depth, minWeightMagnitude, transfers, function(error,success) {
         if (!error) {
