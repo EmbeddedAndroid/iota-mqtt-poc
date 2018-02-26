@@ -67,12 +67,16 @@ var mqttOnMessageEventHandler = function (topic, message) {
     var payload = JSON.parse(message);
     payload['topic'] = topic.toString();
     var task  = {id:taskCount, message: JSON.stringify(payload)};
-    console.log('Adding task ' + task.id + ' to queue with message "' + task.message + '".');
 
-    // Push new message task to the transaction queue to be processed.
-    txQueue.push(task, function(err) {
-        console.log('Finished processing task ' + task.id + '.');
-    });
+    // Push new messages to the queue if the queue depth is less than 5
+    if (txQueue.length() < 5) {
+        console.log('Adding task ' + task.id + ' to queue with message "' + task.message + '".');
+
+        // Push new message task to the transaction queue to be processed.
+        txQueue.push(task, function(err) {
+            console.log('Finished processing task ' + task.id + '.');
+        });
+    }
 }
 
 // Helper for testing IOTA connection
