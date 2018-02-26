@@ -64,7 +64,9 @@ var client = mqtt.connect(url, options);
 var mqttOnMessageEventHandler = function (topic, message) {
     taskCount++;
     // message is Buffer 
-    var task  = {id:taskCount, message: message.toString()};
+    var payload = JSON.parse(message);
+    payload['topic'] = topic.toString();
+    var task  = {id:taskCount, message: JSON.stringify(payload)};
     console.log('Adding task ' + task.id + ' to queue with message "' + task.message + '".');
 
     // Push new message task to the transaction queue to be processed.
